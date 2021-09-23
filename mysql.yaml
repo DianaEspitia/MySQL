@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: phpmyadmin-mysql
+  name: mysql-phpmyadmin
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: mysql-secret
-  namespace: phpmyadmin-mysql
+  namespace: mysql-phpmyadmin
 type: Opaque
 data:
   ROOT_PASSWORD: cGFzc3dvcmQ=
@@ -16,7 +16,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-data-disk
-  namespace: phpmyadmin-mysql
+  namespace: mysql-phpmyadmin
 spec:
   accessModes:
     - ReadWriteOnce
@@ -28,9 +28,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-deployment
-  namespace: phpmyadmin-mysql
+  namespace: mysql-phpmyadmin
   labels:
-    app: phpmyadmin-mysql
+    app: mysql-phpmyadmin
 spec:
   replicas: 1
   selector:
@@ -65,7 +65,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
-  namespace: phpmyadmin-mysql
+  namespace: mysql-phpmyadmin
 spec:
   selector:
     app: mysql
@@ -78,7 +78,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: phpmyadmin-secret
-  namespace: phpmyadmin-mysql
+  namespace: mysql-phpmyadmin
 type: Opaque
 data:
   root-password: cGFzc3dvcmQ=
@@ -87,21 +87,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: phpmyadmin-deployment
-  namespace: phpmyadmin-mysql
+  namespace: mysql-phpmyadmin
   labels:
-    app: phpmyadmin-mysql
+    app: mysql-phpmyadmin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: phpmyadmin-mysql
+      app: mysql-phpmyadmin
   template:
     metadata:
       labels:
-        app: phpmyadmin-mysql
+        app: mysql-phpmyadmin
     spec:
       containers:
-        - name: phpmyadmin-mysql
+        - name: mysql-phpmyadmin
           image: phpmyadmin/phpmyadmin
           ports:
             - containerPort: 80
@@ -120,7 +120,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: phpmyadmin-service
-  namespace: phpmyadmin-mysql
+  namespace: mysql-phpmyadmin
 spec:
   selector:
     app: phpmyadmin-mysql
